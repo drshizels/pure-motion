@@ -38,4 +38,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Lazy-load YouTube thumbnails
+    document.querySelectorAll('.yt-thumb').forEach(function(thumb) {
+        var id = thumb.getAttribute('data-id');
+        // Use maxresdefault for best quality, fall back to hqdefault
+        thumb.style.backgroundImage = 'url(https://img.youtube.com/vi/' + id + '/maxresdefault.jpg)';
+
+        thumb.addEventListener('click', function() {
+            var isWide = thumb.classList.contains('yt-thumb-wide');
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+
+            if (isWide) {
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '12px';
+            } else {
+                iframe.className = 'youtube-short';
+            }
+
+            thumb.replaceWith(iframe);
+        });
+    });
+
 });
