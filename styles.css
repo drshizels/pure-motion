@@ -92,7 +92,9 @@ body {
 }
 
 /* Book Now Button (Hero) */
-.book-btn {
+.book-btn,
+.book-btn:visited,
+.book-btn:link {
     display: inline-block;
     margin-top: 1.5rem;
     padding: 0.6rem 2rem;
@@ -423,7 +425,9 @@ body {
     margin-top: 2rem;
 }
 
-.booking-btn {
+.booking-btn,
+.booking-btn:visited,
+.booking-btn:link {
     padding: 0.8rem 2.5rem;
     font-family: 'Owners XWide', 'Inter', sans-serif;
     font-size: 0.8rem;
@@ -439,7 +443,9 @@ body {
     background: #ddd;
 }
 
-.booking-btn-outline {
+.booking-btn-outline,
+.booking-btn-outline:visited,
+.booking-btn-outline:link {
     background: transparent;
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
