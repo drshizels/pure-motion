@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Motion</title>
-    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="styles.css?v=5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <link href="https://db.onlinewebfonts.com/c/adc95a3d6316f059dc4ede675a366f7e?family=Owners+XWide" rel="stylesheet">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="nav-logo">PURE MOTION</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
     <div id="vanta-bg"></div>
     <section class="hero">
@@ -26,14 +36,35 @@
     </section>
 
     <!-- About Section -->
-    <section class="section about-section">
-        <div class="section-content">
-            <p class="about-text fade-in">Pure Motion LLC is a video production company providing high-quality filming and editing services for businesses of all sizes. We help brands tell their story through clean, engaging visual content.</p>
+    <section id="about" class="section about-section about-full">
+        <div class="section-content about-content">
+            <h2 class="fade-in">ABOUT US</h2>
+            <p class="section-subtitle fade-in">Who we are and what we do.</p>
+
+            <div class="about-body fade-in">
+                <p class="about-text">Pure Motion LLC is a video production company based in <strong>Los Angeles, California</strong>. We create high-quality visual content for businesses of all sizes — helping brands tell their story through clean, cinematic work. No face to the brand. The work speaks for itself.</p>
+            </div>
+
+            <div class="services-grid fade-in">
+                <div class="service-card">
+                    <h3>VIDEO + EDITING</h3>
+                    <p>Full production from start to finish. We handle filming, directing, and post-production so you get a polished final product ready to publish.</p>
+                </div>
+                <div class="service-card">
+                    <h3>EDITING ONLY</h3>
+                    <p>Already have footage? Send it over. We'll handle the edit — color grading, sound design, motion graphics, and delivery.</p>
+                </div>
+            </div>
+
+            <div class="about-booking fade-in">
+                <p class="about-location">Los Angeles, CA</p>
+                <a href="#contact" class="booking-btn">GET IN TOUCH</a>
+            </div>
         </div>
     </section>
 
     <!-- Video Section - Featured Projects -->
-    <section class="section video-section">
+    <section id="work" class="section video-section">
         <div class="section-content">
             <h2 class="fade-in">FEATURED PROJECTS</h2>
             <p class="section-subtitle fade-in">Signature productions created for a wide variety of brands and industries.</p>
@@ -152,11 +183,30 @@
     <section id="contact" class="section booking-section">
         <div class="section-content">
             <h2 class="fade-in">LET'S WORK</h2>
-            <p class="section-subtitle fade-in">Ready to bring your vision to life? Get in touch.</p>
-            <div class="booking-links fade-in">
-                <a href="mailto:puremotionmediallc@gmail.com" class="booking-btn">Email Us</a>
-                <a href="https://instagram.com/" target="_blank" class="booking-btn booking-btn-outline">Instagram</a>
+            <p class="section-subtitle fade-in">Ready to bring your vision to life? Pick what you need and send us a message.</p>
+
+            <div class="contact-options fade-in">
+                <button class="contact-option" data-subject="Editing Quote – 30s to 1 min video" data-body="Hi Pure Motion,%0D%0A%0D%0AI have footage and I'd like a quote for a 30-second to 1-minute video edit.%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Turnaround needed: %0D%0A- Any references or style in mind: %0D%0A%0D%0AThanks!">
+                    <span class="option-title">I HAVE FOOTAGE</span>
+                    <span class="option-desc">I need editing for a 30s – 1 min video</span>
+                </button>
+
+                <button class="contact-option" data-subject="Full Video Production Inquiry" data-body="Hi Pure Motion,%0D%0A%0D%0AI'm interested in full video production (filming + editing).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Location: %0D%0A- Estimated length: %0D%0A- Budget range: %0D%0A%0D%0AThanks!">
+                    <span class="option-title">FULL PRODUCTION</span>
+                    <span class="option-desc">I need filming + editing from start to finish</span>
+                </button>
+
+                <button class="contact-option" data-subject="Editing Only – Longer Project" data-body="Hi Pure Motion,%0D%0A%0D%0AI have footage and need editing for a longer project (1 min+).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Estimated final length: %0D%0A- Amount of raw footage: %0D%0A- Turnaround needed: %0D%0A%0D%0AThanks!">
+                    <span class="option-title">EDITING ONLY</span>
+                    <span class="option-desc">I have footage and need a longer edit (1 min+)</span>
+                </button>
+
+                <button class="contact-option" data-subject="General Inquiry" data-body="Hi Pure Motion,%0D%0A%0D%0AI have a question about your services.%0D%0A%0D%0A">
+                    <span class="option-title">JUST A QUESTION</span>
+                    <span class="option-desc">I want to learn more before committing</span>
+                </button>
             </div>
+
         </div>
     </section>
 
@@ -195,6 +245,6 @@
             document.getElementById('vanta-bg').style.background = '#222222';
         }
     </script>
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
 </body>
 </html>

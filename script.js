@@ -38,6 +38,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Contact option buttons → open mailto with pre-filled content
+    document.querySelectorAll('.contact-option').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var subject = encodeURIComponent(btn.getAttribute('data-subject'));
+            var body = btn.getAttribute('data-body');
+            window.location.href = 'mailto:puremotionmediallc@gmail.com?subject=' + subject + '&body=' + body;
+        });
+    });
+
     // Lazy-load YouTube thumbnails
     document.querySelectorAll('.yt-thumb').forEach(function(thumb) {
         var id = thumb.getAttribute('data-id');
