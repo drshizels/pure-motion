@@ -91,6 +91,25 @@ body {
     opacity: 0.7;
 }
 
+/* Book Now Button (Hero) */
+.book-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.6rem 2rem;
+    font-family: 'Owners XWide', 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.book-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
+
 /* Scroll Hint */
 .scroll-hint {
     position: absolute;
@@ -189,7 +208,7 @@ body {
 }
 
 .video-section h2 {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'Owners XWide', 'Inter', sans-serif;
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     text-shadow:
         1px 1px 0 #ccc,
@@ -197,6 +216,16 @@ body {
         3px 3px 0 #aaa,
         4px 4px 0 #999,
         5px 5px 8px rgba(0,0,0,0.4);
+}
+
+.section-subtitle {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+    font-weight: normal;
+    font-style: italic;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
 }
 
 .video-carousel {
@@ -331,6 +360,13 @@ body {
     background-color: #fff;
 }
 
+.yt-thumb-horizontal {
+    width: 500px;
+    height: 280px;
+    border-radius: 12px;
+    scroll-snap-align: center;
+}
+
 .yt-thumb-wide {
     width: 100%;
     height: 100%;
@@ -372,6 +408,54 @@ body {
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Booking Section */
+.booking-section {
+    min-height: 60vh;
+    padding: 6rem 2rem;
+}
+
+.booking-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.booking-btn {
+    padding: 0.8rem 2.5rem;
+    font-family: 'Owners XWide', 'Inter', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: #222;
+    background: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.booking-btn:hover {
+    transform: translateY(-2px);
+    background: #ddd;
+}
+
+.booking-btn-outline {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.booking-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .booking-links {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 /* Footer */
