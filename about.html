@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Motion — About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/adc95a3d6316f059dc4ede675a366f7e?family=Owners+XWide" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #151515;
+            color: #fff;
+        }
+
+        /* Background layer */
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            background: #151515;
+        }
+
+        .bg-noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+        }
+
+        .blob-1 {
+            width: 60vw; height: 60vw;
+            top: -15%; left: -10%;
+            background: #2a2a2a;
+            opacity: 0.35;
+        }
+
+        .blob-2 {
+            width: 50vw; height: 50vw;
+            bottom: -20%; right: -15%;
+            background: #1f1f1f;
+            opacity: 0.25;
+        }
+
+        .blob-3 {
+            width: 40vw; height: 40vw;
+            top: 30%; left: 50%;
+            transform: translateX(-50%);
+            background: #333333;
+            opacity: 0.2;
+        }
+
+        /* Back arrow */
+        .back-arrow {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.2rem;
+            z-index: 200;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.4rem;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .back-arrow:hover {
+            opacity: 1;
+        }
+
+        /* Logo bar */
+        .logo-bar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.2rem 1.2rem;
+        }
+
+        .logo-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 0.6rem 2.5rem;
+        }
+
+        .logo-text {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .page-title {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-text {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            line-height: 1.9;
+            opacity: 0.65;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-text strong {
+            opacity: 1;
+            color: #fff;
+        }
+
+        /* Services */
+        .services-grid {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            flex: 1;
+            max-width: 320px;
+            padding: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .service-card h3 {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-card p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            opacity: 0.45;
+        }
+
+        .location {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.3;
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 0 auto 3.5rem;
+            max-width: 200px;
+        }
+
+        /* Let's Work section */
+        .work-title {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-subtitle {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            text-align: left;
+            color: #fff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-option:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .option-title {
+            display: block;
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-desc {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            opacity: 0.4;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            font-size: 0.75rem;
+            opacity: 0.3;
+            line-height: 1.6;
+        }
+
+        .footer-email {
+            font-size: 0.75rem;
+            color: #fff;
+            opacity: 0.3;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-email:hover {
+            opacity: 0.7;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .services-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-card {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .contact-options {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-text { font-size: 0.9rem; }
+            .logo-pill { padding: 0.5rem 1.8rem; }
+
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-layer"></div>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="bg-noise"></div>
+
+    <!-- Back arrow -->
+    <a href="index.html" class="back-arrow">&larr;</a>
+
+    <!-- Logo -->
+    <div class="logo-bar">
+        <a href="index.html" class="logo-pill" style="text-decoration:none;">
+            <span class="logo-text">PURE MOTION</span>
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <h1 class="page-title">ABOUT US</h1>
+        <p class="page-subtitle">Who we are and what we do.</p>
+
+        <p class="about-text">Pure Motion LLC is a video production company based in <strong>Los Angeles, California</strong>. We create high-quality visual content for businesses of all sizes — helping brands tell their story through clean, cinematic work. No face to the brand. The work speaks for itself.</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>VIDEO + EDITING</h3>
+                <p>Full production from start to finish. We handle filming, directing, and post-production so you get a polished final product ready to publish.</p>
+            </div>
+            <div class="service-card">
+                <h3>EDITING ONLY</h3>
+                <p>Already have footage? Send it over. We'll handle the edit — color grading, sound design, motion graphics, and delivery.</p>
+            </div>
+        </div>
+
+        <p class="location">Los Angeles, CA</p>
+
+        <div class="divider"></div>
+
+        <h2 class="work-title">LET'S WORK</h2>
+        <p class="work-subtitle">Ready to bring your vision to life? Pick what you need and send us a message.</p>
+
+        <div class="contact-options">
+            <button class="contact-option" onclick="window.location.href='mailto:puremotionmediallc@gmail.com?subject=Editing Quote – 30s to 1 min video&body=Hi Pure Motion,%0D%0A%0D%0AI have footage and I\'d like a quote for a 30-second to 1-minute video edit.%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Turnaround needed: %0D%0A- Any references or style in mind: %0D%0A%0D%0AThanks!'">
+                <span class="option-title">I HAVE FOOTAGE</span>
+                <span class="option-desc">I need editing for a 30s – 1 min video</span>
+            </button>
+
+            <button class="contact-option" onclick="window.location.href='mailto:puremotionmediallc@gmail.com?subject=Full Video Production Inquiry&body=Hi Pure Motion,%0D%0A%0D%0AI\'m interested in full video production (filming + editing).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Location: %0D%0A- Estimated length: %0D%0A- Budget range: %0D%0A%0D%0AThanks!'">
+                <span class="option-title">FULL PRODUCTION</span>
+                <span class="option-desc">I need filming + editing from start to finish</span>
+            </button>
+
+            <button class="contact-option" onclick="window.location.href='mailto:puremotionmediallc@gmail.com?subject=Editing Only – Longer Project&body=Hi Pure Motion,%0D%0A%0D%0AI have footage and need editing for a longer project (1 min+).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Estimated final length: %0D%0A- Amount of raw footage: %0D%0A- Turnaround needed: %0D%0A%0D%0AThanks!'">
+                <span class="option-title">EDITING ONLY</span>
+                <span class="option-desc">I have footage and need a longer edit (1 min+)</span>
+            </button>
+
+            <button class="contact-option" onclick="window.location.href='mailto:puremotionmediallc@gmail.com?subject=General Inquiry&body=Hi Pure Motion,%0D%0A%0D%0AI have a question about your services.%0D%0A%0D%0A'">
+                <span class="option-title">JUST A QUESTION</span>
+                <span class="option-desc">I want to learn more before committing</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div>
+            <p>Pure Motion // Copyright &copy; 2026</p>
+            <p>All Rights Reserved</p>
+        </div>
+        <div>
+            <a href="mailto:puremotionmediallc@gmail.com" class="footer-email">puremotionmediallc@gmail.com</a>
+        </div>
+    </footer>
+
+</body>
+</html>
