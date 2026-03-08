@@ -4,247 +4,594 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Motion</title>
-    <link rel="stylesheet" href="styles.css?v=5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://db.onlinewebfonts.com/c/adc95a3d6316f059dc4ede675a366f7e?family=Owners+XWide" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #111;
+            color: #fff;
+            user-select: none;
+        }
+
+        /* Background layer */
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Noise texture on top of everything */
+        .bg-noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* Color blobs */
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0;
+            transition: opacity 1s ease, background-color 1s ease, transform 1s ease;
+        }
+
+        .blob-1 {
+            width: 60vw; height: 60vw;
+            top: -15%; left: -10%;
+        }
+
+        .blob-2 {
+            width: 50vw; height: 50vw;
+            bottom: -20%; right: -15%;
+        }
+
+        .blob-3 {
+            width: 40vw; height: 40vw;
+            top: 30%; left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .blob-4 {
+            width: 35vw; height: 35vw;
+            top: 10%; right: -5%;
+        }
+
+        .blob-5 {
+            width: 45vw; height: 45vw;
+            bottom: 5%; left: 10%;
+        }
+
+        /* Logo bar */
+        .logo-bar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.2rem 1.2rem;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 0.6rem 2.5rem;
+            transition: background 0.8s ease, border-color 0.8s ease;
+        }
+
+        .logo-text {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: #fff;
+        }
+
+        /* Menu button */
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            width: 42px; height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-btn.open {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dropdown */
+        .nav-dropdown {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            min-width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+
+        .nav-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .nav-dropdown a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1.4rem;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            transition: background 0.2s ease;
+        }
+
+        .nav-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-dropdown a:first-child {
+            border-radius: 16px 16px 0 0;
+        }
+
+        .nav-dropdown a:last-child {
+            border-radius: 0 0 16px 16px;
+        }
+
+        /* Contact form inside dropdown */
+        .contact-form-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .contact-form-wrapper.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .contact-form {
+            padding: 1rem 1.2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            padding: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background: #fff;
+        }
+
+        .nav-dropdown .arrow {
+            font-size: 1.1rem;
+            opacity: 0.5;
+        }
+
+        .nav-dropdown .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 1rem;
+        }
+
+        /* Each slide is a full viewport section */
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* Video frame */
+        .video-frame {
+            width: 280px;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            cursor: pointer;
+            background: #000;
+            /* Animate in */
+            opacity: 0;
+            transform: scale(0.85);
+            filter: blur(15px);
+            transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+        }
+
+        .slide.visible .video-frame {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+        }
+
+        .video-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .video-frame:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Play button */
+        .play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px; height: 56px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 5;
+        }
+
+        .play-btn::after {
+            content: '';
+            display: block;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent #222;
+            margin-left: 3px;
+        }
+
+        .video-frame:hover .play-btn {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #fff;
+        }
+
+        /* Video title */
+        .slide-title {
+            margin-bottom: 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+        }
+
+        .slide.visible .slide-title {
+            opacity: 0.6;
+            transform: translateY(0);
+        }
+
+        .slide-desc {
+            margin-bottom: 1rem;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            max-width: 280px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease 0.35s, transform 0.6s ease 0.35s;
+        }
+
+        .slide.visible .slide-desc {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        /* Reflection */
+        .video-reflection {
+            width: 280px;
+            height: 80px;
+            margin-top: -2px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.04), transparent);
+            border-radius: 0 0 16px 16px;
+            filter: blur(8px);
+            transform: scaleY(-0.3);
+            opacity: 0;
+            transition: opacity 0.7s ease 0.1s;
+        }
+
+        .slide.visible .video-reflection {
+            opacity: 0.5;
+        }
+
+        /* YouTube iframe when playing */
+        .video-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 16px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .video-frame {
+                width: 260px;
+                height: 462px;
+            }
+            .video-reflection { width: 260px; }
+            .logo-text { font-size: 0.9rem; }
+            .logo-pill { padding: 0.5rem 1.8rem; }
+        }
+
+        @media (max-width: 380px) {
+            .video-frame {
+                width: 230px;
+                height: 409px;
+            }
+            .video-reflection { width: 230px; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <a href="#" class="nav-logo">PURE MOTION</a>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#work">Work</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <div id="vanta-bg"></div>
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="title">PURE MOTION</h1>
-            <p class="tagline">The work speaks. We just press record.</p>
-            <a href="#contact" class="book-btn">BOOK NOW</a>
+    <!-- Background -->
+    <div class="bg-layer" id="bgLayer"></div>
+    <div class="bg-blobs" id="bgBlobs">
+        <div class="blob blob-1" id="blob1"></div>
+        <div class="blob blob-2" id="blob2"></div>
+        <div class="blob blob-3" id="blob3"></div>
+        <div class="blob blob-4" id="blob4"></div>
+        <div class="blob blob-5" id="blob5"></div>
+    </div>
+    <div class="bg-noise"></div>
+
+    <!-- Logo + Menu -->
+    <div class="logo-bar">
+        <div class="nav-container">
+            <div class="logo-pill" id="logoPill">
+                <span class="logo-text">PURE MOTION</span>
+            </div>
+            <div class="menu-btn" id="menuBtn">+</div>
         </div>
-        <div class="scroll-hint">
-            <p>Scroll down to discover</p>
-            <div class="scroll-arrow"></div>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div class="nav-dropdown" id="navDropdown">
+        <a href="#about">ABOUT US <span class="arrow">&rarr;</span></a>
+        <div class="divider"></div>
+        <a href="gallery.html">GALLERY <span class="arrow">&rarr;</span></a>
+        <div class="divider"></div>
+        <a href="#" id="contactToggle">CONTACT <span class="arrow" id="contactArrow">&rarr;</span></a>
+        <div class="contact-form-wrapper" id="contactForm">
+            <div class="divider"></div>
+            <form class="contact-form" action="https://formsubmit.co/puremotionmediallc@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="New inquiry from Pure Motion website">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://puremotionmedia.co">
+                <input type="email" name="email" placeholder="Email*" required>
+                <input type="text" name="name" placeholder="Name">
+                <textarea name="message" placeholder="Message..."></textarea>
+                <button type="submit">SUBMIT</button>
+            </form>
         </div>
+    </div>
+
+    <!-- Showreel -->
+    <section class="slide" data-color="#151515" data-id="j6ZnXl3ypV4"
+        data-blob1="#2a2a2a" data-blob2="#1f1f1f" data-blob3="#333333"
+        data-blob4="#1a1a1a" data-blob5="#2e2e2e">
+        <p class="slide-title">Showreel</p>
+        <p class="slide-desc">A showcase of our work — every project filmed, directed, and edited entirely by Pure Motion.</p>
+        <div class="video-frame">
+            <img src="https://img.youtube.com/vi/j6ZnXl3ypV4/maxresdefault.jpg" alt="">
+            <div class="play-btn"></div>
+        </div>
+        <div class="video-reflection"></div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section about-section about-full">
-        <div class="section-content about-content">
-            <h2 class="fade-in">ABOUT US</h2>
-            <p class="section-subtitle fade-in">Who we are and what we do.</p>
-
-            <div class="about-body fade-in">
-                <p class="about-text">Pure Motion LLC is a video production company based in <strong>Los Angeles, California</strong>. We create high-quality visual content for businesses of all sizes — helping brands tell their story through clean, cinematic work. No face to the brand. The work speaks for itself.</p>
-            </div>
-
-            <div class="services-grid fade-in">
-                <div class="service-card">
-                    <h3>VIDEO + EDITING</h3>
-                    <p>Full production from start to finish. We handle filming, directing, and post-production so you get a polished final product ready to publish.</p>
-                </div>
-                <div class="service-card">
-                    <h3>EDITING ONLY</h3>
-                    <p>Already have footage? Send it over. We'll handle the edit — color grading, sound design, motion graphics, and delivery.</p>
-                </div>
-            </div>
-
-            <div class="about-booking fade-in">
-                <p class="about-location">Los Angeles, CA</p>
-                <a href="#contact" class="booking-btn">GET IN TOUCH</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Section - Featured Projects -->
-    <section id="work" class="section video-section">
-        <div class="section-content">
-            <h2 class="fade-in">FEATURED PROJECTS</h2>
-            <p class="section-subtitle fade-in">Signature productions created for a wide variety of brands and industries.</p>
-            <div class="video-carousel">
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="0dsayCth0Gg"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="mJf58aNPVtI"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="RsQWO4oe5Y4"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="dNG76dNEPmo"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="Elnoahk9HXQ"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="tz-JYz-IME8"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Section - Brands -->
-    <section class="section video-section">
-        <div class="section-content">
-            <h2 class="fade-in">BRANDS</h2>
-            <p class="section-subtitle fade-in">Brands we've partnered with across diverse industries.</p>
-            <div class="video-carousel">
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="t_m7nl7iTpY"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="kGFyH41mbe4"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="7VspnczvguA"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="NQRQUmvWy1M"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="EBMwaG1_n3s"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="to8s87iMDJc"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="_Zzyi1xKgdM"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="V-awsCSXdE4"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="jDWivITHGwY"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="H-IKAO6zSck"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="4kSYqD1x17k"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Section - Timeless -->
-    <section class="section video-section">
-        <div class="section-content">
-            <h2 class="fade-in">EVENTS</h2>
-            <p class="section-subtitle fade-in">Cinematic coverage of unforgettable events.</p>
-            <div class="video-carousel">
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="n5yBRGI1Ojg"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="felT7o925KA"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="bDHZPIT32ZY"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="Fhu0uBBAq44"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="YNOVgQGEW-Q"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb" data-id="KGV56MoZhlE"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Video Section - Once In A Lifetime -->
-    <section class="section video-section">
-        <div class="section-content">
-            <h2 class="fade-in">ONCE IN A LIFETIME</h2>
-            <p class="section-subtitle fade-in">Once-in-a-lifetime moments, captured forever.</p>
-            <div class="video-carousel">
-                <div class="video-item">
-                    <div class="yt-thumb yt-thumb-horizontal" data-id="zQ0VALkPDLc"></div>
-                </div>
-                <div class="video-item">
-                    <div class="yt-thumb yt-thumb-horizontal" data-id="-i6mZwLH3ow"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Booking / Contact Section -->
-    <section id="contact" class="section booking-section">
-        <div class="section-content">
-            <h2 class="fade-in">LET'S WORK</h2>
-            <p class="section-subtitle fade-in">Ready to bring your vision to life? Pick what you need and send us a message.</p>
-
-            <div class="contact-options fade-in">
-                <button class="contact-option" data-subject="Editing Quote – 30s to 1 min video" data-body="Hi Pure Motion,%0D%0A%0D%0AI have footage and I'd like a quote for a 30-second to 1-minute video edit.%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Turnaround needed: %0D%0A- Any references or style in mind: %0D%0A%0D%0AThanks!">
-                    <span class="option-title">I HAVE FOOTAGE</span>
-                    <span class="option-desc">I need editing for a 30s – 1 min video</span>
-                </button>
-
-                <button class="contact-option" data-subject="Full Video Production Inquiry" data-body="Hi Pure Motion,%0D%0A%0D%0AI'm interested in full video production (filming + editing).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Location: %0D%0A- Estimated length: %0D%0A- Budget range: %0D%0A%0D%0AThanks!">
-                    <span class="option-title">FULL PRODUCTION</span>
-                    <span class="option-desc">I need filming + editing from start to finish</span>
-                </button>
-
-                <button class="contact-option" data-subject="Editing Only – Longer Project" data-body="Hi Pure Motion,%0D%0A%0D%0AI have footage and need editing for a longer project (1 min+).%0D%0A%0D%0AHere are some details:%0D%0A- Type of project: %0D%0A- Estimated final length: %0D%0A- Amount of raw footage: %0D%0A- Turnaround needed: %0D%0A%0D%0AThanks!">
-                    <span class="option-title">EDITING ONLY</span>
-                    <span class="option-desc">I have footage and need a longer edit (1 min+)</span>
-                </button>
-
-                <button class="contact-option" data-subject="General Inquiry" data-body="Hi Pure Motion,%0D%0A%0D%0AI have a question about your services.%0D%0A%0D%0A">
-                    <span class="option-title">JUST A QUESTION</span>
-                    <span class="option-desc">I want to learn more before committing</span>
-                </button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-left">
-            <p>Pure Motion // Copyright &copy; 2026</p>
-            <p>All Rights Reserved</p>
-        </div>
-        <div class="footer-right">
-            <a href="mailto:puremotionmediallc@gmail.com" class="footer-email">puremotionmediallc@gmail.com</a>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
     <script>
-        try {
-            VANTA.DOTS({
-                el: "#vanta-bg",
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0xffffff,
-                color2: 0xffffff,
-                backgroundColor: 0x222222,
-                size: 2.0,
-                spacing: 20.00,
-                showLines: false
-            });
-        } catch(e) {
-            document.getElementById('vanta-bg').style.background = '#222222';
+        const slide = document.querySelector('.slide');
+        const bgLayer = document.getElementById('bgLayer');
+        const logoPill = document.getElementById('logoPill');
+
+        function hexToRgb(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `${r}, ${g}, ${b}`;
         }
+
+        const blobs = [
+            document.getElementById('blob1'),
+            document.getElementById('blob2'),
+            document.getElementById('blob3'),
+            document.getElementById('blob4'),
+            document.getElementById('blob5')
+        ];
+
+        const blobConfigs = [
+            { opacity: 0.35, scale: 1.0 },
+            { opacity: 0.25, scale: 1.1 },
+            { opacity: 0.2,  scale: 0.9 },
+            { opacity: 0.15, scale: 1.05 },
+            { opacity: 0.3,  scale: 0.95 }
+        ];
+
+        // Set background and blobs
+        bgLayer.style.backgroundColor = slide.dataset.color;
+        blobs.forEach((blob, i) => {
+            const color = slide.dataset[`blob${i + 1}`];
+            if (color) {
+                blob.style.backgroundColor = color;
+                blob.style.opacity = blobConfigs[i].opacity;
+                blob.style.transform = `scale(${blobConfigs[i].scale})`;
+            }
+        });
+        const blobColor = slide.dataset.blob1 || slide.dataset.color;
+        logoPill.style.background = `rgba(${hexToRgb(blobColor)}, 0.35)`;
+        slide.classList.add('visible');
+
+        // Click to play video
+        document.querySelector('.video-frame').addEventListener('click', function () {
+            const id = slide.dataset.id;
+            this.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        });
+
+        // Menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navDropdown = document.getElementById('navDropdown');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = navDropdown.classList.toggle('open');
+            menuBtn.classList.toggle('open');
+            menuBtn.textContent = isOpen ? '\u00d7' : '+';
+        });
+
+        // Contact form toggle
+        const contactToggle = document.getElementById('contactToggle');
+        const contactForm = document.getElementById('contactForm');
+        const contactArrow = document.getElementById('contactArrow');
+
+        contactToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = contactForm.classList.toggle('open');
+            contactArrow.innerHTML = isOpen ? '&darr;' : '&rarr;';
+        });
+
+        contactForm.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        function closeMenu() {
+            navDropdown.classList.remove('open');
+            menuBtn.classList.remove('open');
+            menuBtn.textContent = '+';
+            contactForm.classList.remove('open');
+            contactArrow.innerHTML = '&rarr;';
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !menuBtn.contains(e.target)) {
+                closeMenu();
+            }
+        });
     </script>
-    <script src="script.js?v=6"></script>
+
 </body>
 </html>
