@@ -340,6 +340,81 @@
                 gap: 1rem;
             }
         }
+
+        /* Free Consultation */
+        .consult-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .consult-divider {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2));
+            margin: 0 auto 2rem;
+        }
+
+        .consult-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.35;
+            margin-bottom: 0.8rem;
+        }
+
+        .consult-title {
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+        }
+
+        .consult-desc {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            opacity: 0.4;
+            max-width: 400px;
+            margin: 0 auto 1.8rem;
+            line-height: 1.6;
+        }
+
+        .consult-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.9rem 2.2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .consult-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .consult-btn .arrow {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .consult-btn:hover .arrow {
+            transform: translateX(4px);
+        }
     </style>
 </head>
 <body>
@@ -408,6 +483,15 @@
                 <span class="option-title">JUST A QUESTION</span>
                 <span class="option-desc">I want to learn more before committing</span>
             </button>
+        </div>
+
+        <!-- Free Consultation -->
+        <div class="consult-section">
+            <div class="consult-divider"></div>
+            <p class="consult-label">No commitment</p>
+            <h2 class="consult-title">FREE CONSULTATION</h2>
+            <p class="consult-desc">Not sure what you need yet? Let's talk. We'll walk you through what we can do and figure out the best approach — no pressure, no invoice.</p>
+            <a href="mailto:puremotionmediallc@gmail.com?subject=Free Consultation Request&body=Hi Pure Motion,%0D%0A%0D%0AI'd like to set up a free consultation.%0D%0A%0D%0AHere's a little about what I'm looking for:%0D%0A%0D%0A" class="consult-btn">Book a Free Call <span class="arrow">&rarr;</span></a>
         </div>
     </div>
 
