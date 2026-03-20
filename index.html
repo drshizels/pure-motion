@@ -373,6 +373,68 @@
             border-radius: 16px;
         }
 
+        /* Gallery CTA */
+        .gallery-cta {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 8rem;
+            text-align: center;
+        }
+
+        .gallery-cta .cta-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
+            margin-bottom: 2.5rem;
+        }
+
+        .gallery-cta .cta-text {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.02em;
+            margin-bottom: 1.8rem;
+        }
+
+        .gallery-cta .cta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Owners XWide', 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.9rem 2.2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-cta .cta-link:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .gallery-cta .cta-link .cta-arrow {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-cta .cta-link:hover .cta-arrow {
+            transform: translateX(4px);
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
             .slide { padding-top: 4rem; }
@@ -441,6 +503,13 @@
             <div class="play-btn"></div>
         </div>
         <div class="video-reflection"></div>
+    </section>
+
+    <!-- Gallery CTA -->
+    <section class="gallery-cta">
+        <div class="cta-line"></div>
+        <p class="cta-text">There's more where that came from.</p>
+        <a href="gallery.html" class="cta-link">View the Work <span class="cta-arrow">&rarr;</span></a>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
