@@ -585,6 +585,16 @@
                 closeMenu();
             }
         });
+
+        // Blur video on scroll
+        const videoFrame = document.querySelector('.video-frame');
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const blur = Math.min(scrollY / 40, 15);
+            const opacity = Math.max(1 - scrollY / 600, 0);
+            videoFrame.style.filter = `blur(${blur}px)`;
+            videoFrame.style.opacity = opacity;
+        });
     </script>
 
 </body>
