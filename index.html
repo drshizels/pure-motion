@@ -480,15 +480,39 @@
         <a href="#" id="contactToggle">CONTACT <span class="arrow" id="contactArrow">&rarr;</span></a>
         <div class="contact-form-wrapper" id="contactForm">
             <div class="divider"></div>
-            <form class="contact-form" action="https://formsubmit.co/puremotionmediallc@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="New inquiry from Pure Motion website">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://puremotionmedia.co">
-                <input type="email" name="email" placeholder="Email*" required>
-                <input type="text" name="name" placeholder="Name">
-                <textarea name="message" placeholder="Message..."></textarea>
-                <button type="submit">SUBMIT</button>
-            </form>
+            <!-- Contact type selector -->
+            <div id="contactSelector" style="padding:0.8rem 1.2rem;display:flex;flex-direction:column;gap:0.5rem;">
+                <button id="btnGeneral" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:0.75rem 1rem;color:#fff;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-align:left;transition:background 0.3s,border-color 0.3s;">General Inquiry</button>
+                <button id="btnBurbank" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:0.75rem 1rem;color:#fff;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-align:left;transition:background 0.3s,border-color 0.3s;">I'm a Burbank Business</button>
+            </div>
+            <!-- General contact form -->
+            <div id="generalForm" style="display:none;">
+                <form class="contact-form" action="https://formsubmit.co/puremotionmediallc@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="New inquiry from Pure Motion website">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://puremotionmedia.co">
+                    <input type="email" name="email" placeholder="Email*" required>
+                    <input type="text" name="name" placeholder="Name">
+                    <textarea name="message" placeholder="Message..."></textarea>
+                    <button type="submit">SUBMIT</button>
+                </form>
+            </div>
+            <!-- Burbank business form -->
+            <div id="burbankForm" style="display:none;">
+                <form class="contact-form" action="https://formsubmit.co/puremotionmediallc@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="Burbank Business — Free Video Collab">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://puremotionmedia.co">
+                    <p style="font-family:'Times New Roman',serif;font-style:italic;font-size:0.75rem;opacity:0.5;line-height:1.5;padding:0 0 0.3rem;">You were selected for a free 30-60 second promo video. No cost, no catch.</p>
+                    <input type="text" name="business" placeholder="Business Name*" required>
+                    <input type="text" name="name" placeholder="Your Name">
+                    <input type="email" name="email" placeholder="Email*" required>
+                    <input type="text" name="instagram" placeholder="Instagram @">
+                    <textarea name="message" placeholder="Anything else..."></textarea>
+                    <button type="submit">SUBMIT</button>
+                </form>
+                <a href="burbank.html" style="display:block;text-align:center;padding:0.6rem 1rem;margin:0 1.2rem 0.8rem;font-family:'Inter',sans-serif;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);text-decoration:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;transition:color 0.3s,border-color 0.3s;" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='rgba(255,255,255,0.1)'">See Our Burbank Work &rarr;</a>
+            </div>
         </div>
     </div>
 
@@ -572,12 +596,37 @@
             e.stopPropagation();
         });
 
+        // Contact type buttons
+        const btnGeneral = document.getElementById('btnGeneral');
+        const btnBurbank = document.getElementById('btnBurbank');
+        const contactSelector = document.getElementById('contactSelector');
+        const generalForm = document.getElementById('generalForm');
+        const burbankForm = document.getElementById('burbankForm');
+
+        btnGeneral.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactSelector.style.display = 'none';
+            generalForm.style.display = 'block';
+            burbankForm.style.display = 'none';
+        });
+
+        btnBurbank.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactSelector.style.display = 'none';
+            burbankForm.style.display = 'block';
+            generalForm.style.display = 'none';
+        });
+
         function closeMenu() {
             navDropdown.classList.remove('open');
             menuBtn.classList.remove('open');
             menuBtn.textContent = '+';
             contactForm.classList.remove('open');
             contactArrow.innerHTML = '&rarr;';
+            // Reset contact forms
+            contactSelector.style.display = 'flex';
+            generalForm.style.display = 'none';
+            burbankForm.style.display = 'none';
         }
 
         document.addEventListener('click', (e) => {
